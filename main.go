@@ -15,6 +15,8 @@ import (
 	"os/signal"
 	"time"
 
+	nrgin "github.com/newrelic/go-agent/v3/integrations/nrgin"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	_ "gorm.io/driver/postgres"
 )
 
@@ -60,6 +62,20 @@ func main() {
 	router, err := middleware.NewRouter(cfg, controllers)
 	if err != nil {
 		logger.Errorf("initializing router failed: %v", err)
+	}
+
+	if cfg.NewRelicEnabled {
+		apm, err := newrelic.NewApplication(
+			newrelic.ConfigAppName(cfg.NewRelicAppName),
+			newrelic.ConfigLicense(cfg.NewRelicLicense),
+			newrelic.ConfigAppLogForwardingEnabled(true),
+			newrelic.ConfigDistributedTracerEnabled(true),
+		)
+		if err != nil {
+			logger.Errorf("initializing new relic failed: %v", err)
+		}
+
+		router.Use(nrgin.Middleware(apm))
 	}
 
 	srv := &http.Server{

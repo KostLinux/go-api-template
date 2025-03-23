@@ -18,6 +18,9 @@ type Env struct {
 	PostgresUser     string
 	PostgresPassword string
 	PostgresSSLMode  string
+	NewRelicLicense  string
+	NewRelicAppName  string
+	NewRelicEnabled  bool
 	AllowedOrigins   []string
 }
 
@@ -33,6 +36,7 @@ func Load() (*Env, error) {
 	}
 
 	viper.SetDefault("POSTGRES_SSL_MODE", "disable")
+	viper.SetDefault("NEW_RELIC_ENABLED", false)
 
 	viper.AutomaticEnv()
 
@@ -50,6 +54,9 @@ func Load() (*Env, error) {
 		PostgresUser:     viper.GetString("POSTGRES_USER"),
 		PostgresPassword: viper.GetString("POSTGRES_PASSWORD"),
 		PostgresSSLMode:  viper.GetString("POSTGRES_SSL_MODE"),
+		NewRelicLicense:  viper.GetString("NEW_RELIC_LICENSE_KEY"),
+		NewRelicAppName:  viper.GetString("NEW_RELIC_APP_NAME"),
+		NewRelicEnabled:  viper.GetBool("NEW_RELIC_ENABLED"),
 		AllowedOrigins:   origins,
 	}, nil
 }
