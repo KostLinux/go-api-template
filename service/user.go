@@ -3,9 +3,8 @@ package service
 import (
 	"context"
 	"go-api-template/model"
+	mapper "go-api-template/model/mappers/users"
 	"go-api-template/repository"
-	repositorymodel "go-api-template/repository/model"
-	"go-api-template/service/mapper"
 
 	"github.com/go-openapi/strfmt"
 	"go.opentelemetry.io/otel"
@@ -37,7 +36,7 @@ func (service *user) UserByID(ctx context.Context, userID strfmt.UUID4) (*model.
 
 	span.SetAttributes(attribute.String("user.id", userID.String()))
 
-	filter := repositorymodel.UsersFilter{
+	filter := model.UsersFilter{
 		ID: &userID,
 	}
 

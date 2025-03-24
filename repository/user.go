@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"go-api-template/model"
 	"go-api-template/model/commonerrors"
-	repositorymodel "go-api-template/repository/model"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -16,7 +16,7 @@ import (
 
 type IUser interface {
 	Begin() (*sqlx.Tx, error)
-	SelectUserByFilter(ctx context.Context, filter repositorymodel.UsersFilter) (*repositorymodel.User, error)
+	SelectUserByFilter(ctx context.Context, filter model.UsersFilter) (*model.User, error)
 }
 
 type user struct {
@@ -35,11 +35,11 @@ func (repository *user) Begin() (*sqlx.Tx, error) {
 	return repository.db.Beginx()
 }
 
-func (repository *user) SelectUserByFilter(ctx context.Context, filter repositorymodel.UsersFilter) (*repositorymodel.User, error) {
+func (repository *user) SelectUserByFilter(ctx context.Context, filter model.UsersFilter) (*model.User, error) {
 	ctx, span := repository.tracer.Start(ctx, "SelectUserByFilter")
 	defer span.End()
 
-	var user repositorymodel.User
+	var user model.User
 	whereCondition, args := buildUsersWhereCondition(filter)
 
 	query := `SELECT * FROM users`
@@ -63,7 +63,7 @@ func (repository *user) SelectUserByFilter(ctx context.Context, filter repositor
 	return &user, nil
 }
 
-func buildUsersWhereCondition(filter repositorymodel.UsersFilter) (string, []interface{}) {
+func buildUsersWhereCondition(filter model.UsersFilter) (string, []interface{}) {
 	var conditions []string
 	var args []interface{}
 

@@ -2,10 +2,10 @@ package service
 
 import (
 	"errors"
+	"go-api-template/model"
 	"go-api-template/model/commonerrors"
 	"go-api-template/pkg/random"
 	"go-api-template/repository"
-	repositorymodel "go-api-template/repository/model"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -45,7 +45,7 @@ func Test_User_TestSuite(t *testing.T) {
 
 func (suite *UserTestSuite) Test_UserByID_ReturnsError_InCaseOfSelectUserByFilterFailed() {
 	// Arrange
-	filter := repositorymodel.UsersFilter{
+	filter := model.UsersFilter{
 		ID: &suite.userID,
 	}
 
@@ -66,7 +66,7 @@ func (suite *UserTestSuite) Test_UserByID_ReturnsError_InCaseOfSelectUserByFilte
 
 func (suite *UserTestSuite) Test_UserByID_ReturnsError_InCaseOfUserNotFound() {
 	// Arrange
-	filter := repositorymodel.UsersFilter{
+	filter := model.UsersFilter{
 		ID: &suite.userID,
 	}
 
@@ -87,11 +87,11 @@ func (suite *UserTestSuite) Test_UserByID_ReturnsError_InCaseOfUserNotFound() {
 
 func (suite *UserTestSuite) Test_UserByID_ReturnsUser_InCaseOfSuccess() {
 	// Arrange
-	user := &repositorymodel.User{
+	user := &model.User{
 		ID: suite.userID,
 	}
 
-	filter := repositorymodel.UsersFilter{
+	filter := model.UsersFilter{
 		ID: &suite.userID,
 	}
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"go-api-template/model"
 	"go-api-template/model/commonerrors"
 	"go-api-template/pkg/random"
-	"go-api-template/repository/model"
 	"testing"
 
 	"github.com/gin-gonic/gin"
